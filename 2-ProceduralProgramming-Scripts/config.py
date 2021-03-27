@@ -8,15 +8,11 @@ OUTPUT_MODEL_PATH = 'logistic_regression.pkl'
 
 # ======= PARAMETERS ===========
 
-
-
 FREQUENT_LABELS = {
     'sex': ['female', 'male'],
     'cabin': ['C', 'Missing'],
     'embarked': ['C', 'Q', 'S'],
     'title': ['Miss', 'Mr', 'Mrs']}
-
-
 
 
 
@@ -27,7 +23,7 @@ NUMERICAL_TO_FLOATS = ['fare', 'age']
 
 UNNECESSARY_VAR = ['name','ticket', 'boat', 'body','home.dest']
 
-# variable groups for engineering
+# variables for engineering
 TARGET_FEATURE = 'survived'
 
 NUMERICAL_MISSING_TO_FILL = ['age', 'fare']
@@ -35,7 +31,7 @@ NUMERICAL_MISSING_TO_FILL = ['age', 'fare']
 CATEGORICAL_MISSING_TO_FILL = ['cabin', 'embarked']
 
 # variable groups for one-hot encoding
-CATEGORICAL_ENCODE = [['sex', 'cabin', 'embarked', 'title']
+CATEGORICAL_ENCODE = ['sex', 'cabin', 'embarked', 'title']
 
 #Final Re-ordered Features for training
 FEATURES = ['pclass', 'age', 'sibsp', 'parch', 'fare', 'age_na', 'fare_na',

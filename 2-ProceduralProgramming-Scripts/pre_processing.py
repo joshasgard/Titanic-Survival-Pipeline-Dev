@@ -2,6 +2,7 @@
 # =================IMPORT NECESSARY LIBRARIES========================
 
 #for processing data
+import re
 import pandas as pd
 import numpy as np 
 
@@ -24,7 +25,7 @@ def load_data(path_to_data):
 #function replaces all '?' with standard numpy 'nan'
 def replace_question_marks(df):
     
-    return df = df.replace('?', np.nan)
+    return df.replace('?', np.nan)
 
 
 # retain only the first cabin if more than 1 are available per passenger
@@ -56,7 +57,7 @@ def num_to_flts(df, var):
 
 # Drop features
 def drop_unnecessary_features(df,unnece_fts):
-    df.drop(unnece_fts, axis=1, inplace = True)
+    df.drop(labels = unnece_fts, axis=1, inplace = True)
     return df
 
 
@@ -77,6 +78,8 @@ def extract_letter(df):
     df['cabin'] = df['cabin'].str[0]
     return df
 
+def add_missing_indicator(df, var):
+    return np.where(df[var].isnull(), 1, 0)
 
 #function replaces NA by value entered by user
     # or by string Missing (default behaviour)
@@ -93,12 +96,20 @@ def remove_rare_labels(df, var, frequent_labels):
 
 #One-Hot encoding of categorical variables
 def encode_categorical(df,cate_var):
-    df = pd.get_dummies(df, columns = cate_var, drop_first=True)
-    return df
+    return pd.get_dummies(df, columns = cate_var, drop_first=True)
+    
 
 
-def add_missing_dummy(df,var, value = 0):
-    df[var] = value
+def check_dummy_variables(df, dummy_list):
+    
+    missing_vars = [var for var in dummy_list if var not in df.columns]
+    
+    if len(missing_vars) == 0:
+        print('All dummies were added')
+    else:
+        for var in missing_vars:
+            df[var] = 0
+    
     return df
 
 
@@ -106,7 +117,7 @@ def train_scaler(df,rearranged_columns, output_path):
     scaler = StandardScaler()
     scaler.fit(df[rearranged_columns])
     joblib.dump(scaler, output_path)
-    return scaler_
+    return scaler
   
 
 def scale_features(df,rearranged_columns, scaler):
@@ -130,6 +141,6 @@ def train_model(df, target, output_path):
 
 
 def predict(df, model):
-    model = joblib.load(log_model)
+    model = joblib.load(model)
     return model.predict(df)
 
